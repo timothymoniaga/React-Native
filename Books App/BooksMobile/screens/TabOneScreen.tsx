@@ -44,8 +44,31 @@ const query = gql`
 export default function TabOneScreen() {
   const [ search, setSearch ] = useState(""); 
   const [ runQuery, { data, loading, error }] = useLazyQuery(query);
+  const [ provider, setProvider ] = useState<
+  "googleBooksSearch" | "openLibrarySearch" 
+  > ("googleBooksSearch");
 
-  console.log(JSON.stringify(data, null, 2));
+  const parseBook =  (item: any) : Book => {
+    if (provider == "googleBooksSearch") {
+      return {
+        image: item.volumeInfo.imageLinks?.thumbnail, 
+        title: item.volumeInfo.title, 
+        authors: item.volumeInfo.authors, 
+        isbn: item.volumeInfo.industryIdentifiers?.[0]?.identifier, 
+      };
+    }
+    else {
+      return{
+        image: `https://covers.openlibrary.org/b/olid/${item.cover_edition_key}-M.jpg`,
+        title: item.title,
+        authors: item.author_name,
+        isbn: item.isbn?.[0],
+      };
+
+    }
+  }; 
+
+  //console.log(JSON.stringify(data, null, 2));
   return ( 
     <View style={styles.container}>
       <View style={styles.header}>
@@ -53,15 +76,25 @@ export default function TabOneScreen() {
           value={search} 
           onChangeText={setSearch}
           placeholder='Search...' 
-          style={styles.input}
-        />
+          style={styles.input}/>
 
         <Button 
           title='Search'
-          onPress={() => runQuery({ variables: { q: search }})}
-        />
+          onPress={() => runQuery({ variables: { q: search }})}/>
 
       </View>
+      <View style={styles.tabs}>
+        <Text 
+          style={provider == "googleBooksSearch" ? {fontWeight: "bold", color: "skyblue" } : {} }
+          onPress={() => setProvider("googleBooksSearch")}
+          >Google Books</Text>
+        <Text 
+          style={provider == "openLibrarySearch" ? {fontWeight: "bold", color: "skyblue" } : {} }
+          onPress={() => setProvider("openLibrarySearch")}
+          >Open Library</Text>
+
+      </View>
+
       {loading && <ActivityIndicator/>}
       {error && (
         <View>
@@ -71,17 +104,9 @@ export default function TabOneScreen() {
       )}
 
       <FlatList
-        data={data?.googleBooksSearch?.items || []}
+        data={(provider == "googleBooksSearch" ? data?.googleBooksSearch?.items : data?.openLibrarySearch?.docs) || []}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
-          <BookItem book={{
-            image: item.volumeInfo.imageLinks?.thumbnail, 
-            title: item.volumeInfo.title, 
-            authors: item.volumeInfo.authors, 
-            isbn: item.volumeInfo.industryIdentifiers?.[0]?.identifier, 
-            }} 
-          />
-        )}
+        renderItem={({ item }) => <BookItem book={parseBook(item)} /> }
       />
     </View>
   );
@@ -111,6 +136,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     marginVertical: 3,
+  },
+  tabs:{
+    flexDirection: "row",
+    justifyContent: "space-around",
+    height: 30,
+    alignItems: "center",
   },
 
 });
