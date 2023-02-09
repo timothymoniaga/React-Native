@@ -42,14 +42,11 @@ const query = gql`
 
 export default function TabOneScreen() {
   const { data, loading, error } = useQuery(query, {
-    variables: { q: "React Native "},
+    variables: { q: "React Native"},
   });
 
-  //console.log(JSON.stringify(data, null, 2));
-  console.log(data);
-  console.log(loading);
-  console.log(error);
-  return (
+  console.log(JSON.stringify(data, null, 2));
+  return ( 
     <View style={styles.container}>
       {loading && <ActivityIndicator/>}
       {error && (
@@ -60,13 +57,14 @@ export default function TabOneScreen() {
       )}
 
       <FlatList
-        data={data?.googleBookSearch?.items || []}
+        data={data?.googleBooksSearch?.items || []}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <BookItem book={{
             image: item.volumeInfo.imageLinks?.thumbnail, 
             title: item.volumeInfo.title, 
             authors: item.volumeInfo.authors, 
-            isbn: item.volumeInfo.isbn.industryIdentifiers[0].identifier, 
+            isbn: item.volumeInfo.industryIdentifiers[0].identifier, 
             }} 
           />
         )}

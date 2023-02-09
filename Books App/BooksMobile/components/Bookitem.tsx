@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
+import Colors from "../constants/Colors";
 
 type BookItemProps = {
   book: Book;
 };
 
 const BookItem = ({ book }: BookItemProps) => {
-  console.log("Hello")
   return (
     <View style={styles.container}>
       <Image source={{ uri: book.image }} style={styles.image} />
