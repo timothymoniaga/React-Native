@@ -1,9 +1,10 @@
-import { ActivityIndicator, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, FlatList } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import { gql, useQuery } from '@apollo/client';
+import BookItem from '../components/Bookitem';
 
 const query = gql`
   query SearchBooks($q: String) {
@@ -44,6 +45,7 @@ export default function TabOneScreen() {
     variables: { q: "React Native "},
   });
 
+  //console.log(JSON.stringify(data, null, 2));
   console.log(data);
   console.log(loading);
   console.log(error);
@@ -56,6 +58,19 @@ export default function TabOneScreen() {
           <Text>{error.message}</Text>
         </View>
       )}
+
+      <FlatList
+        data={data?.googleBookSearch?.items || []}
+        renderItem={({ item }) => (
+          <BookItem book={{
+            image: item.volumeInfo.imageLinks?.thumbnail, 
+            title: item.volumeInfo.title, 
+            authors: item.volumeInfo.authors, 
+            isbn: item.volumeInfo.isbn.industryIdentifiers[0].identifier, 
+            }} 
+          />
+        )}
+      />
     </View>
   );
 }
@@ -63,8 +78,6 @@ export default function TabOneScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
