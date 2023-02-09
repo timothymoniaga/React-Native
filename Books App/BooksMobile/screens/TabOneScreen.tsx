@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     height: 30,
+    fontSize: 14,
     alignItems: "center",
   },
 
