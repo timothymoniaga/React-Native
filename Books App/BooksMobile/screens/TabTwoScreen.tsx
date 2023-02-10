@@ -7,7 +7,7 @@ import { useMyBooks } from '../context/MyBooksProvider';
 
 export default function TabTwoScreen() {
   const { savedBooks } = useMyBooks();
-  //console.log(savedBooks)
+
   return (
     <View style={styles.container}>
       <FlatList

@@ -1,4 +1,5 @@
-import { createContext, useContext, ReactNode, useState } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 ///passing data to another page. Very Important
 
@@ -24,7 +25,16 @@ const areBooksTheSame = (a: Book, b: Book) => {
 
 const MyBooksProvider = ({ children }: Props) => {
   const [savedBooks, setSavedBooks] = useState<Book[]>([]);
+  const [loaded, setloaded] = useState(false);
   
+useEffect(() => {
+  loadData();
+}, []);
+
+useEffect(() => {
+  persistData();
+}, [savedBooks])
+
   const isBookSaved = (book: Book) => {
     return savedBooks.some((savedBook) => 
     areBooksTheSame( savedBook, book));
@@ -40,6 +50,19 @@ const MyBooksProvider = ({ children }: Props) => {
 
     }
 
+  };
+
+  const persistData = async () => {
+    await AsyncStorage.setItem("booksData", JSON.stringify(savedBooks));
+  };
+
+  const loadData = async () => {
+    const dataString = await AsyncStorage.getItem("booksData");
+    if(dataString) {
+      const items = JSON.parse(dataString);
+      setSavedBooks(items);
+    }
+    setloaded(true);
   };
 
   return (
