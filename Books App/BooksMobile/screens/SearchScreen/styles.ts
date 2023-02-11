@@ -18,10 +18,6 @@ export default StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    //paddingHorizontal: 5,
-    //marginHorizontal:
-    //justifyContent: "center",
-    
   },
   input: {
     flex: 1,

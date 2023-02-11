@@ -6,7 +6,7 @@ import BookItem from '../../components/Bookitem';
 import { useState } from 'react';
 import { SafeAreaView } from "react-native-safe-area-context"
 import { searchQuery } from './queries';
-import { parseBook, parseData } from '../../services/bookService';
+import { parseBook } from '../../services/bookService';
 import styles from './styles';
 
 export default function SearchScreen() {
@@ -15,7 +15,6 @@ export default function SearchScreen() {
   const [ provider, setProvider ] = useState<BookProvider> ("googleBooksSearch");
 
   //console.log(JSON.stringify(data?.openLibrarySearch?.docs.length, null, 2));
-  console.log(JSON.stringify(data?.googleBooksSearch?.items[0].__typename));
 
   return ( 
     <SafeAreaView edges={["top"]} style={styles.container}>
@@ -35,18 +34,6 @@ export default function SearchScreen() {
         </Pressable>
 
       </View>
-      <View style={styles.tabs}>
-        <Text 
-          style={provider == "googleBooksSearch" ? {fontWeight: "bold", color: "skyblue" } : {} }
-          onPress={() => setProvider("googleBooksSearch")}
-          >Google Books</Text>
-        <Text 
-          style={provider == "openLibrarySearch" ? {fontWeight: "bold", color: "skyblue" } : {} }
-          onPress={() => setProvider("openLibrarySearch")}
-          >Open Library</Text>
-
-      </View>
-
       {loading && <ActivityIndicator/>}
       {error && (
         <View>
@@ -56,7 +43,7 @@ export default function SearchScreen() {
       )}
 
       <FlatList
-        data={parseData(data?.googleBooksSearch, data?.openLibrarySearch) || []}
+        data={[ ...data?.googleBooksSearch?.items, ...data?.openLibrarySearch?.docs] || []}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <BookItem book={parseBook(item)} /> }
       />
