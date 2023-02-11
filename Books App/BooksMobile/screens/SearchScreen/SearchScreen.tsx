@@ -15,7 +15,7 @@ export default function SearchScreen() {
   const [ provider, setProvider ] = useState<BookProvider> ("googleBooksSearch");
 
   //console.log(JSON.stringify(data?.openLibrarySearch?.docs.length, null, 2));
-  //console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data?.googleBooksSearch?.items[0].__typename));
 
   return ( 
     <SafeAreaView edges={["top"]} style={styles.container}>

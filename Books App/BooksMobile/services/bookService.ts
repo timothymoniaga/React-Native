@@ -1,6 +1,6 @@
 export const parseBook = (item: any) : Book => {
-  console.log([item]);
-  if (item?.__typename == "GoogleRoot") {
+  console.log("");
+  if (item?.__typename == "GoogleItemsEntry") {
     return {
       image: item.volumeInfo.imageLinks?.thumbnail, 
       title: item.volumeInfo.title, 
@@ -8,9 +8,9 @@ export const parseBook = (item: any) : Book => {
       isbn: item.volumeInfo.industryIdentifiers?.[0]?.identifier, 
     };
   }
-  else if (item?.__typename == "OpenLibraryRoot"){
+  else if (item?.__typename == "OLDocsEntry"){
     return{
-      image: `https://covers.openlibrary.org/b/olid/${item?.docs.cover_edition_key}-M.jpg`,
+      image: `https://covers.openlibrary.org/b/olid/${item?.cover_edition_key}-M.jpg`,
       title: item.title,
       authors: item.author_name,
       isbn: item.isbn?.[0],
@@ -26,7 +26,9 @@ export const parseBook = (item: any) : Book => {
 }; 
 
 export const parseData = (googleData: any, openLibData: any) => {
-  const test = [googleData?.items, openLibData?.docs]
-  //console.log(openLibData?.docs[0]);
-  return [googleData?.items, openLibData?.docs];
+  //const test = [...googleData?.items, ...openLibData?.docs]
+  //console.log([...googleData?.items, ...openLibData?.docs]);
+  const jsonTest = {...googleData?.items, ...openLibData?.docs}
+  console.log(googleData);
+  return jsonTest;
 }
