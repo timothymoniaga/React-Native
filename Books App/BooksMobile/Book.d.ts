@@ -5,4 +5,4 @@ type Book = {
     isbn: string;
 };
 
-type BookProvider = "googleBooksSearch" | "openLibrarySearch"
+type BookProvider = "googleBooksSearch" | "openLibrarySearch";
