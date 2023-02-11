@@ -6,7 +6,7 @@ import BookItem from '../../components/Bookitem';
 import { useState } from 'react';
 import { SafeAreaView } from "react-native-safe-area-context"
 import { searchQuery } from './queries';
-import { parseBook } from '../../services/bookService';
+import { parseBook, parseData } from '../../services/bookService';
 import styles from './styles';
 
 export default function SearchScreen() {
@@ -55,9 +55,9 @@ export default function SearchScreen() {
       )}
 
       <FlatList
-        data={(provider == "googleBooksSearch" ? data?.googleBooksSearch?.items : data?.openLibrarySearch?.docs) || []}
+        data={parseData(data?.openLibrarySearch, data?.openLibrarySearch)|| []}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <BookItem book={parseBook(item, provider)} /> }
+        renderItem={({ item }) => <BookItem book={parseBook(item)} /> }
       />
     </SafeAreaView>
   );
