@@ -1,6 +1,6 @@
 export const parseBook = (item: any) : Book => {
-  //console.log(item.__typename);
-  if (item?.items) {
+  console.log([item]);
+  if (item?.__typename == "GoogleRoot") {
     return {
       image: item.volumeInfo.imageLinks?.thumbnail, 
       title: item.volumeInfo.title, 
@@ -8,7 +8,7 @@ export const parseBook = (item: any) : Book => {
       isbn: item.volumeInfo.industryIdentifiers?.[0]?.identifier, 
     };
   }
-  else if (item?.docs){
+  else if (item?.__typename == "OpenLibraryRoot"){
     return{
       image: `https://covers.openlibrary.org/b/olid/${item?.docs.cover_edition_key}-M.jpg`,
       title: item.title,
@@ -17,15 +17,16 @@ export const parseBook = (item: any) : Book => {
     };
   } else {
     return {
-      image: "",
-      title: "",
-      authors: [],
-      isbn: "",
+      image: "http://books.google.com/books/content?id=WNSUweeeSIIC&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      title: "Hello",
+      authors: ["James David Cooper"],
+      isbn: "0395722748",
     }
   }
 }; 
 
 export const parseData = (googleData: any, openLibData: any) => {
-  //console.log([googleData?.items, openLibData?.docs]);
+  const test = [googleData?.items, openLibData?.docs]
+  //console.log(openLibData?.docs[0]);
   return [googleData?.items, openLibData?.docs];
 }

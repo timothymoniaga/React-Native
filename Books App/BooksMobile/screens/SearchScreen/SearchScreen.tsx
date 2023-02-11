@@ -15,6 +15,7 @@ export default function SearchScreen() {
   const [ provider, setProvider ] = useState<BookProvider> ("googleBooksSearch");
 
   //console.log(JSON.stringify(data?.openLibrarySearch?.docs.length, null, 2));
+  //console.log(JSON.stringify(data));
 
   return ( 
     <SafeAreaView edges={["top"]} style={styles.container}>
@@ -55,7 +56,7 @@ export default function SearchScreen() {
       )}
 
       <FlatList
-        data={parseData(data?.openLibrarySearch, data?.openLibrarySearch)|| []}
+        data={parseData(data?.googleBooksSearch, data?.openLibrarySearch) || []}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <BookItem book={parseBook(item)} /> }
       />
