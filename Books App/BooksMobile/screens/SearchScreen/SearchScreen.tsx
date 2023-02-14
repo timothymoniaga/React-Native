@@ -14,8 +14,6 @@ export default function SearchScreen() {
   const [ runQuery, { data, loading, error }] = useLazyQuery(searchQuery);
   const [ provider, setProvider ] = useState<BookProvider> ("googleBooksSearch");
 
-  //console.log(JSON.stringify(data?.openLibrarySearch?.docs.length, null, 2));
-
   return ( 
     <SafeAreaView edges={["top"]} style={styles.container}>
       <View style={styles.header}>
