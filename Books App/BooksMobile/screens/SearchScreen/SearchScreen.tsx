@@ -1,4 +1,4 @@
-import { ActivityIndicator, FlatList, TextInput, Button } from 'react-native';
+import { ActivityIndicator, FlatList, TextInput, Button, Pressable } from 'react-native';
 
 import { Text, View } from '../../components/Themed';
 import { useLazyQuery } from '@apollo/client';
@@ -21,25 +21,17 @@ export default function SearchScreen() {
           value={search} 
           onChangeText={setSearch}
           placeholder='Search...' 
-          style={styles.input}/>
+          style={styles.input}
+          />
 
-        <Button 
-          title='Search'
-          onPress={() => runQuery({ variables: { q: search }})}/>
-
-      </View>
-      <View style={styles.tabs}>
-        <Text 
-          style={provider == "googleBooksSearch" ? {fontWeight: "bold", color: "skyblue" } : {} }
-          onPress={() => setProvider("googleBooksSearch")}
-          >Google Books</Text>
-        <Text 
-          style={provider == "openLibrarySearch" ? {fontWeight: "bold", color: "skyblue" } : {} }
-          onPress={() => setProvider("openLibrarySearch")}
-          >Open Library</Text>
+        <Pressable 
+          onPress={() => runQuery({ variables: { q: search }})}
+          style={styles.button}
+          >
+            <Text style={styles.text}>Search</Text>
+        </Pressable>
 
       </View>
-
       {loading && <ActivityIndicator/>}
       {error && (
         <View>
@@ -49,9 +41,9 @@ export default function SearchScreen() {
       )}
 
       <FlatList
-        data={(provider == "googleBooksSearch" ? data?.googleBooksSearch?.items : data?.openLibrarySearch?.docs) || []}
+        data={[ ...data?.googleBooksSearch?.items, ...data?.openLibrarySearch?.docs] || []}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <BookItem book={parseBook(item, provider)} /> }
+        renderItem={({ item }) => <BookItem book={parseBook(item)} /> }
       />
     </SafeAreaView>
   );

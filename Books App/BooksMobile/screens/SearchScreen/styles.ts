@@ -27,12 +27,21 @@ export default StyleSheet.create({
     padding: 5,
     marginVertical: 3,
   },
-  tabs:{
+  tabs: {
     flexDirection: "row",
     justifyContent: "space-around",
     height: 30,
     fontSize: 14,
     alignItems: "center",
   },
-
+  button: {
+    paddingHorizontal: 5,
+    paddingVertical: 7,
+    backgroundColor: 'skyblue',
+    borderRadius: 4,
+    //elevation: 3,
+  },
+  text: {
+    color: 'black',
+  }
 });

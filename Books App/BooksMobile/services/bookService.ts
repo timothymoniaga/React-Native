@@ -1,5 +1,5 @@
-export const parseBook =  (item: any, provider: BookProvider) : Book => {
-  if (provider == "googleBooksSearch") {
+export const parseBook = (item: any) : Book => {
+  if (item?.__typename == "GoogleItemsEntry") {
     return {
       image: item.volumeInfo.imageLinks?.thumbnail, 
       title: item.volumeInfo.title, 
@@ -7,13 +7,13 @@ export const parseBook =  (item: any, provider: BookProvider) : Book => {
       isbn: item.volumeInfo.industryIdentifiers?.[0]?.identifier, 
     };
   }
-  else {
+  else if (item?.__typename == "OLDocsEntry"){
     return{
-      image: `https://covers.openlibrary.org/b/olid/${item.cover_edition_key}-M.jpg`,
+      image: `https://covers.openlibrary.org/b/olid/${item?.cover_edition_key}-M.jpg`,
       title: item.title,
       authors: item.author_name,
       isbn: item.isbn?.[0],
     };
-
-  }
+  } 
 }; 
+
